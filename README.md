@@ -7,6 +7,8 @@
 | No. | Project | Code |
 | --- | ---- | --- |
 | `01` | Follow Card | [Details](projects/01-follow-card/) |
+| `02` | 3 in a row game | [Details](projects/02-sample-game/) |
+| `03` | Mouse follower | [Details](projects/03-mouse-follower/) |
 
 </div>
 
