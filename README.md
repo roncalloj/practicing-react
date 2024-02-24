@@ -4,12 +4,11 @@
   
   # Repo with a couple of projects to improve React skills ⚛️
 
-| No. | Project | Code |
-| --- | ---- | --- |
-| `01` | Follow Card | [Details](projects/01-follow-card/) |
-| `02` | 3 in a row game | [Details](projects/02-sample-game/) |
-| `03` | Mouse follower | [Details](projects/03-mouse-follower/) |
+| No.  | Project                        | Code                                     |
+| ---- | ------------------------------ | ---------------------------------------- |
+| `01` | Follow Card                    | [Details](projects/01-follow-card/)      |
+| `02` | 3 in a row game                | [Details](projects/02-sample-game/)      |
+| `03` | Mouse follower                 | [Details](projects/03-mouse-follower/)   |
+| `04` | Fetching cats facts and images | [Details](projects/04-Fetching-catsAPI/) |
 
 </div>
-
-
