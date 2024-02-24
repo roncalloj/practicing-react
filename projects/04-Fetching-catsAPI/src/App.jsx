@@ -1,27 +1,13 @@
-import { useEffect, useState } from 'react';
 import '../style.css';
-import { getCatsFacts } from './services/getFacts';
+import { useImages } from './hooks/useImages';
+import { useRandomFact } from './hooks/useRandomFact';
 
 export function App() {
-	const [fetchedFact, setFact] = useState('');
-	const [imageURL, setURL] = useState('');
-
-	useEffect(() => {
-		getCatsFacts().then((fact) => setFact(fact));
-	}, []);
-
-	useEffect(() => {
-		if (!fetchedFact) return;
-		const queryWord = fetchedFact.split(' ')[0];
-		fetch(`https://cataas.com/cat/says/${queryWord}`).then((res) => {
-			const { url } = res;
-			setURL(url);
-		});
-	}, [fetchedFact]);
+	const { fetchedFact, newCatFact } = useRandomFact();
+	const { imageURL } = useImages({ fetchedFact });
 
 	const handleClick = async () => {
-		const newFact = await getCatsFacts();
-		setFact(newFact);
+		newCatFact();
 	};
 
 	return (
