@@ -1,15 +1,27 @@
-import noResults from '../mocks/no_results.json';
-import withResults from '../mocks/with_results.json';
+import { useCallback, useRef, useState } from 'react';
+import { searchMovies } from '../services/movies';
 
-export function useMovies() {
-	const movies = withResults.Search;
+export function useMovies({ query }) {
+	const [movies, setMovies] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
+	const previousQuery = useRef(query);
 
-	const eachMovie = movies?.map((movie) => ({
-		id: movie.imdbID,
-		title: movie.Title,
-		year: movie.Year,
-		poster: movie.Poster,
-	}));
+	const getMovies = useCallback(async ({ query }) => {
+		if (query === previousQuery.current) return;
 
-	return { movies: eachMovie };
+		try {
+			setLoading(true);
+			setError(null);
+			previousQuery.current = query;
+			const searchedMovies = await searchMovies({ query });
+			setMovies(searchedMovies);
+		} catch (e) {
+			setError(e.message);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
+
+	return { movies, getMovies, loading };
 }

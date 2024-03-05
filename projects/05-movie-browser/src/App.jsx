@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import debounce from 'just-debounce-it';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { MoviesResults } from './components/Movies.jsx';
 import { useMovies } from './hooks/useMovies.js';
@@ -11,7 +12,6 @@ function useQuery() {
 	useEffect(() => {
 		if (firstInput.current) {
 			firstInput.current = query === '';
-			console.log(firstInput.current);
 			return;
 		}
 		if (query === '') {
@@ -25,16 +25,25 @@ function useQuery() {
 }
 
 function App() {
-	const { movies } = useMovies();
 	const { query, setQuery, error } = useQuery();
+	const { movies, loading, getMovies } = useMovies({ query });
+
+	const debounceQuery = useCallback(
+		debounce((query) => {
+			getMovies({ query });
+		}, 700),
+		[]
+	);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log({ query });
+		getMovies({ query });
 	};
 
 	const handleChange = (event) => {
-		setQuery(event.target.value);
+		const newSearch = event.target.value;
+		setQuery(newSearch);
+		debounceQuery(newSearch);
 	};
 
 	return (
@@ -53,9 +62,7 @@ function App() {
 				{error && <p className="error">{error}</p>}
 			</header>
 
-			<main>
-				<MoviesResults movies={movies} />
-			</main>
+			<main>{loading ? <p>searching...</p> : <MoviesResults movies={movies} />}</main>
 		</section>
 	);
 }
