@@ -4,7 +4,7 @@ import { searchMovies } from '../services/movies';
 export function useMovies({ query }) {
 	const [movies, setMovies] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
+	const [errorResult, setErrorResult] = useState(null);
 	const previousQuery = useRef(query);
 
 	const getMovies = useCallback(async ({ query }) => {
@@ -12,16 +12,20 @@ export function useMovies({ query }) {
 
 		try {
 			setLoading(true);
-			setError(null);
+			setErrorResult(null);
 			previousQuery.current = query;
 			const searchedMovies = await searchMovies({ query });
-			setMovies(searchedMovies);
+			if (typeof searchedMovies === 'string') {
+				setErrorResult(searchedMovies);
+				setMovies([]);
+			}
+			if (Array.isArray(searchedMovies)) setMovies(searchedMovies);
 		} catch (e) {
-			setError(e.message);
+			setErrorResult(e.message);
 		} finally {
 			setLoading(false);
 		}
 	}, []);
 
-	return { movies, getMovies, loading };
+	return { movies, getMovies, loading, errorResult };
 }

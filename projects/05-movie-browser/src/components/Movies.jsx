@@ -12,12 +12,12 @@ function ListOfmovies({ movies }) {
 	);
 }
 
-function NoResult() {
-	return <p>No results found</p>;
+function NoResult({ errorResult }) {
+	return <p>{errorResult}</p>;
 }
 
-export function MoviesResults({ movies }) {
+export function MoviesResults({ movies, errorResult }) {
 	const hasMovies = movies?.length > 0;
 
-	return hasMovies ? <ListOfmovies movies={movies} /> : <NoResult />;
+	return hasMovies ? <ListOfmovies movies={movies} /> : <NoResult errorResult={errorResult} />;
 }

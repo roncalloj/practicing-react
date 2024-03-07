@@ -3,30 +3,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { MoviesResults } from './components/Movies.jsx';
 import { useMovies } from './hooks/useMovies.js';
-
-function useQuery() {
-	const [query, setQuery] = useState('');
-	const [error, setError] = useState(null);
-	const firstInput = useRef(true);
-
-	useEffect(() => {
-		if (firstInput.current) {
-			firstInput.current = query === '';
-			return;
-		}
-		if (query === '') {
-			setError('No movie title to browse');
-			return;
-		}
-		setError(null);
-	}, [query]);
-
-	return { query, setQuery, error };
-}
+import { useQuery } from './hooks/useQuery.js';
 
 function App() {
-	const { query, setQuery, error } = useQuery();
-	const { movies, loading, getMovies } = useMovies({ query });
+	const { query, setQuery, errorQuerry } = useQuery();
+	const { movies, loading, getMovies, errorResult } = useMovies({ query });
 
 	const debounceQuery = useCallback(
 		debounce((query) => {
@@ -59,10 +40,16 @@ function App() {
 					/>
 					<button type="submit">Search</button>
 				</form>
-				{error && <p className="error">{error}</p>}
+				{errorQuerry && <p className="error">{errorQuerry}</p>}
 			</header>
 
-			<main>{loading ? <p>searching...</p> : <MoviesResults movies={movies} />}</main>
+			<main>
+				{loading ? (
+					<p>searching...</p>
+				) : (
+					(movies || errorResult) && <MoviesResults movies={movies} errorResult={errorResult} />
+				)}
+			</main>
 		</section>
 	);
 }
