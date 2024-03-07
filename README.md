@@ -10,5 +10,6 @@
 | `02` | 3 in a row game                | [Details](projects/02-sample-game/)      |
 | `03` | Mouse follower                 | [Details](projects/03-mouse-follower/)   |
 | `04` | Fetching cats facts and images | [Details](projects/04-Fetching-catsAPI/) |
+| `05` | Movie browser                  | [Details](projects/05-movie-browser/) |
 
 </div>
